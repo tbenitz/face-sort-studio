@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101322">
+  <meta name="description" content="FaceSort Studio — private, local face grouping for photo folders and video collections.">
+  <title>FaceSort Studio · Private face organizer</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="FaceSort Studio home"><span class="brand-symbol">◈</span><span><strong>FaceSort</strong><small>STUDIO</small></span></a>
+      <div class="topbar-right"><span class="privacy-chip"><span class="dot"></span> Private · On-device</span><span id="modelBadge" class="model-chip" role="status">Initializing engine…</span></div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div><span class="eyebrow">YOUR MEDIA, ORGANIZED BY FACE</span><h1>Find every appearance.<br><em>Keep every person together.</em></h1><p>Drop in photos, a folder, or videos. FaceSort finds faces, creates person galleries, and lets you correct any mistakes. No account, no photo uploads, no cloud recognition.</p></div>
+        <div class="hero-stat"><span class="glow-orb">◎</span><span>Recognize locally.<br><strong>Review everything.</strong></span></div>
+      </section>
+
+      <section id="dropzone" class="upload-zone" aria-label="Upload photos and videos" tabindex="0">
+        <div class="upload-icon">⇧</div>
+        <div class="upload-copy"><h2>Start with your memories</h2><p>Drag photos, videos, or entire folders here. You can add more at any time.</p></div>
+        <div class="upload-actions"><button type="button" id="addFiles" class="button primary">+ Add photos / videos</button><button type="button" id="addFolder" class="button secondary">▦ Add a folder</button></div>
+        <p class="tiny">JPG, PNG, WebP, GIF, BMP and browser-playable videos · Files stay on your device</p>
+        <input id="filesInput" type="file" accept="image/*,video/*,.jpg,.jpeg,.png,.webp,.gif,.bmp,.mp4,.webm,.mov,.m4v,.mkv" multiple hidden>
+        <input id="folderInput" type="file" webkitdirectory directory multiple hidden>
+      </section>
+
+      <section class="settings-panel" aria-label="Scan settings">
+        <div class="settings-title"><span class="mini-icon">⚙</span><strong>Scan settings</strong><span class="muted">Adjust before scanning or adding a new batch</span></div>
+        <div class="settings-grid">
+          <label>Detection mode<select id="detectorMode"><option value="fast">Balanced · faster</option><option value="accurate">Detailed · slower</option></select></label>
+          <label>Video sampling<select id="sampleEvery"><option value="1">Every 1 second</option><option value="2">Every 2 seconds</option><option value="4" selected>Every 4 seconds</option><option value="8">Every 8 seconds</option><option value="15">Every 15 seconds</option><option value="30">Every 30 seconds</option></select></label>
+          <label>Frames per video<select id="maxFrames"><option value="100">Up to 100</option><option value="300" selected>Up to 300</option><option value="750">Up to 750</option><option value="1500">Up to 1,500</option></select></label>
+          <label class="slider-label">Match strictness <span id="matchLabel">Careful · 0.50</span><input type="range" id="matchThreshold" min="0.38" max="0.64" step="0.01" value="0.50"></label>
+        </div>
+        <p class="settings-footnote">Video scanning samples frames rather than checking every video frame. More frequent samples find more appearances but take longer. Matching never establishes someone's identity.</p>
+      </section>
+
+      <section class="workspace" aria-label="Face organization workspace">
+        <div class="workspace-head"><div><div class="eyebrow">YOUR WORKSPACE</div><h2>Face library</h2></div><div class="workspace-actions"><button id="rescanButton" type="button" class="button secondary small">↻ Recheck matches</button><button id="importButton" type="button" class="button secondary small">↑ Import backup</button><button id="exportButton" type="button" class="button secondary small">↓ Export</button><button id="clearButton" type="button" class="button subtle small">Clear library</button></div></div>
+        <div class="stats-strip"><div><strong id="personCount">0</strong><span>People</span></div><div><strong id="appearanceCount">0</strong><span>Face examples</span></div><div><strong id="mediaCount">0</strong><span>Media files</span></div><div><strong id="reviewCount">0</strong><span>Items to review</span></div></div>
+        <div id="scanProgress" class="progress-panel" hidden><div class="progress-top"><div><strong id="scanTitle">Scanning files…</strong><p id="scanDetail">Preparing</p></div><button class="button subtle small" type="button" id="cancelScan">Stop scan</button></div><div class="track"><div id="progressFill"></div></div><span id="progressPercent" class="tiny">0%</span></div>
+        <nav class="tabs" aria-label="Library views"><button type="button" class="tab active" data-tab="people">People <span id="peopleTabCount">0</span></button><button type="button" class="tab" data-tab="review">Review <span id="reviewTabCount">0</span></button><button type="button" class="tab" data-tab="sources">Files <span id="filesTabCount">0</span></button></nav>
+        <div id="workspaceContent" class="content"></div>
+      </section>
+      <footer><span>◈ FaceSort Studio</span><span>Computed on this device · Library thumbnails and edits are saved only in this browser</span></footer>
+    </main>
+  </div>
+
+  <input id="backupInput" type="file" accept=".json,application/json" hidden>
+  <div id="toastRegion" aria-live="polite" class="toast-region"></div>
+  <div id="modalHost"></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>
